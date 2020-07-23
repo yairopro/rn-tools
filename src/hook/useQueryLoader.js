@@ -1,4 +1,3 @@
-
 import { useLazyQuery } from "@apollo/client"
 import { useSyncEffect } from "./useEffect";
 
