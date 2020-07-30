@@ -6,23 +6,8 @@ import use from "../hook";
 export default function View({ responsive, ...props }) {
 	const [layout, setLayout] = use.state(null);
 	if (responsive) {
-		if (responsive instanceof Array) {
-			const levelsSeparators = responsive.map(Number)
-				.filter(width => width > 0);
-
-			if (levelsSeparators.length > 0) // render only when level change
-				responsive = ({ width }, { width: oldWidth }) => {
-					const oldIndex = levelsSeparators.findIndex(separator => oldWidth < separator);
-					const newIndex = levelsSeparators.findIndex(separator => width < separator);
-					return oldIndex !== newIndex;
-				};
-
-			else // no valid levels
-				responsive = () => false;
-		}
-
 		if (!(responsive instanceof Function))
-			responsive = () => true; // always render
+			responsive = DEFAULT_RESPONSIVE;
 
 		props.onLayout = parallel(
 			props.onLayout,
@@ -39,3 +24,5 @@ export default function View({ responsive, ...props }) {
 
 	return <RNView {...props} />;
 }
+
+const DEFAULT_RESPONSIVE = () => true;  // always render
