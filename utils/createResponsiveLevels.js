@@ -1,12 +1,22 @@
-export default function createResponsiveLevels(levels) {
-	levels = levels.map(Number)
-		.filter(width => width > 0)
-		.sort();
-	levels.push(Infinity);
+import {toPairs} from 'ramda'
 
-	const getLevelOf = layout => levels.findIndex(separator => layout.width < separator);
+export default function createResponsiveLevels(levels) {
+	levels = {...levels, infinity: Infinity};
+
+	const orderedLevels = toPairs(levels)
+		.filter(([, width]) => width > 0)
+		.sort(([, width1], [, width2]) => width1 < width2)
+		.map(([key, width]) => { key, width });
+	orderedLevels.push(LEVEL_INFINITY);
+
+	const getLevelOf = (layout) => {
+		const level = orderedLevels.find(level => layout.width < level.width);
+		return level.width;
+	};
+
 	const responsive = (layout, oldLayout) => getLevelOf(oldLayout) !== getLevelOf(layout);
 	responsive.getLevelOf = getLevelOf;
+	Object.assign(responsive, levels);
 
 	return responsive;
 }

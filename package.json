@@ -11,6 +11,7 @@
     "react-native": "^0.63.1"
   },
   "dependencies": {
-    "js-tools": "git+https://github.com/yairopro/js-tools.git#v0.0.8"
+    "js-tools": "git+https://github.com/yairopro/js-tools.git#v0.0.8",
+    "ramda": "^0.27.1"
   }
 }
