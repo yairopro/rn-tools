@@ -7,7 +7,6 @@ export default function createResponsiveLevels(levels) {
 		.filter(([, width]) => width > 0)
 		.sort(([, width1], [, width2]) => width1 < width2)
 		.map(([key, width]) => { key, width });
-	orderedLevels.push(LEVEL_INFINITY);
 
 	const getLevelOf = (layout) => {
 		const level = orderedLevels.find(level => layout.width < level.width);
