@@ -5,6 +5,7 @@ import forceRender from "./useForceRender"
 import memory from "./useMemory"
 import style from "./useStyle"
 import subscribre from "./useSubscribe"
+import responsiveLevel from "./useResponsiveLevel"
 
 const use = {
 	state,
@@ -15,6 +16,7 @@ const use = {
 	memory,
 	style,
 	subscribre,
+	responsiveLevel,
 };
 
 export default use;
