@@ -5,10 +5,10 @@ import useMemory from "./useMemory"
 export default function useResponsiveLevels(levels) {
 	const [level, setLevel] = useState(undefined);
 
-	const responsive = useMemory(() => {
+	const handler = useMemory(() => {
 		const compareLayouts = createResponsiveLevels(levels);
 
-		function handler(layout, oldLayout) {
+		return function (layout, oldLayout) {
 			const levelChanged = compareLayouts(layout, oldLayout);
 			
 			if (levelChanged) {
@@ -17,13 +17,8 @@ export default function useResponsiveLevels(levels) {
 			}
 
 			return levelChanged;
-		}
-
-		Object.assign(handler, compareLayouts);
-
-		return handler;
+		};
 	});
 
-	return [level, responsive];
+	return [level, handler];
 }
-

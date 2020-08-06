@@ -13,7 +13,7 @@ export default function View({ responsive, ...props }) {
 			props.onLayout,
 			event => {
 				const newLayout = event.nativeEvent.layout;
-				if (!layout || responsive(newLayout, layout))
+				if (responsive(newLayout, layout))
 					setLayout(newLayout);
 			},
 		);

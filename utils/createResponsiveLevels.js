@@ -8,7 +8,10 @@ export default function createResponsiveLevels(levels) {
 		.sort();
 
 	const getLevelOf = layout => orderedLevels.find(level => layout.width < level);
-	const responsive = (layout, oldLayout) => getLevelOf(oldLayout) !== getLevelOf(layout);
+	const responsive = (layout, oldLayout) => 
+		!oldLayout // first render
+		|| getLevelOf(oldLayout) !== getLevelOf(layout); // or level changed
+		
 	Object.assign(responsive, levels);
 
 	responsive.getLevelOf = getLevelOf;
