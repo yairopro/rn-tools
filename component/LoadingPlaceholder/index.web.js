@@ -3,7 +3,7 @@ import {View} from "react-native"
 import use from "../../hook";
 import "./animation.css"
 
-export default function LoadingPlaceholder({ animated = true, ...props }) {
+export default function LoadingPlaceholder({ animated, ...props }) {
 	props.style = use.style(props.style, animated && localStyles.layout, [animated]);
 
 	return (
