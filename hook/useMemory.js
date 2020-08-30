@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react"
-import match from "js-tools/src/array/match"
+import match from "js-tools/array/match"
 
 export default function useMemory(factory, dependencies, destructor) {
 	dependencies = dependencies || [];
