@@ -1,5 +1,5 @@
 import * as React from "react"
-import match from "js-tools/src/array/match";
+import match from "js-tools/array/match";
 
 function generateUseEffect(launch){
 	return function effectHook(effect, dependencies) {

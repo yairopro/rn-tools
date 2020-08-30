@@ -1,6 +1,6 @@
 import React from "react"
 import { View as RNView, TouchableOpacity } from "react-native"
-import parallel from "js-tools/src/function/parallel"
+import parallel from "js-tools/function/parallel"
 import use from "../hook";
 
 export default function View({ responsive, onPress, ...props }) {
