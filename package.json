@@ -6,6 +6,7 @@
   "license": "MIT",
   "peerDependencies": {
     "@apollo/client": "^3.0.2",
+    "@react-navigation/native": "5.x",
     "firebase": "^7.16.1",
     "react": "^16.13.1",
     "react-native": "^0.63.1"

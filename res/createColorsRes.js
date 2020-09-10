@@ -11,7 +11,7 @@ export default map(rawColors => {
 		return getColor[index];
 	};
 
-	Object.assign(getColor);
+	Object.assign(getColor, rawColors);
 
 	return getColor;
 });
