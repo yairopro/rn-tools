@@ -1,43 +1,43 @@
-import * as React from "react"
+import React from "react"
 import match from "js-tools/array/match";
+import timeout from "js-tools/utils/timeout"
+import call from "ramda/es/call"
 
-function generateUseEffect(launch){
+function generateUseEffect(schedule) {
 	return function effectHook(effect, dependencies) {
 		if (!dependencies)
 			dependencies = [];
-	
+
 		const memory = React.useRef({}).current;
-	
-		function undo() {
-			if (memory.undo)
-				memory.undo();
+
+		/* omnipresent */ function undo() {
+			const undo = memory.undo;
+			memory.undo = undefined; // run once only
+			if (undo instanceof Function)
+				undo();
 		}
-	
-		if (!memory.dependencies || !match(dependencies, memory.dependencies)) {
-			memory.dependencies = [...dependencies];
-	
+
+		if (/* first time */ !memory.dependencies || !match(dependencies, memory.dependencies)) {
+			const oldDependencies = memory.dependencies || [];
+			const newDependencies = memory.dependencies = [...dependencies];
+
 			function runEffect() {
 				undo();
-				memory.undo = null;
-	
-				if (effect) {
-					const undo = effect(...dependencies);
-					if (undo instanceof Function)
-						memory.undo = undo;
-				}
+
+				if (effect)
+					memory.undo = effect(newDependencies, oldDependencies);
 			}
 
-			// run (a)sync effect
-			launch(runEffect);
+			memory.undo /* unscheduler */ = schedule(runEffect);
 		}
-	
+
 		// undo on unmount
 		React.useEffect(() => undo, []);
 	};
 }
 
-export const useEffect = generateUseEffect(setTimeout); // async
-export const useSyncEffect = generateUseEffect(run => run()); // sync
+export const useEffect = generateUseEffect(timeout); // async
+export const useSyncEffect = generateUseEffect(call); // sync
 export default useEffect; // default is async
 
 
