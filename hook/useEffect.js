@@ -18,14 +18,14 @@ function generateUseEffect(schedule) {
 		}
 
 		if (/* first time */ !memory.dependencies || !match(dependencies, memory.dependencies)) {
-			const oldDependencies = memory.dependencies || [];
+			const oldDependencies = memory.dependencies;
 			const newDependencies = memory.dependencies = [...dependencies];
 
 			function runEffect() {
 				undo();
 
 				if (effect)
-					memory.undo = effect(newDependencies, oldDependencies);
+					memory.undo = effect(newDependencies, /* nullable */ oldDependencies);
 			}
 
 			memory.undo /* unscheduler */ = schedule(runEffect);

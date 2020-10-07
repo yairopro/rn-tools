@@ -1,10 +1,12 @@
 import { useLazyQuery } from "@apollo/client"
 import { useSyncEffect } from "./useEffect";
 
-export default function useQueryLoader(query, variables){
-	const [load, loader] = useLazyQuery(query, {variables});
+export default function useQueryLoader(query, variables) {
+	// TODO here variables can be a function: (data) => {variables}
+
+	const [load, loader] = useLazyQuery(query, { variables });
 	useSyncEffect(() => {
-		if (query){
+		if (query) {
 			load();
 			loader.loading = true;
 		}

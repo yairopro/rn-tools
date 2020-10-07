@@ -6,29 +6,34 @@ export default function useMemory(factory, dependencies, destructor) {
 
 	const memory = useRef({}).current;
 
-	// called twice
-	function destroy(){
-		if (memory.destructor)
-			memory.destructor();
+	/* omnipresent */ function destroy(...params) {
+		const { destructor } = memory;
+		memory.destructor = undefined; // run once only
+		if (destructor instanceof Function)
+			destructor(...params);
 	}
 
-	// first time or dependencies changed
-	if (!memory.dependencies || !match(dependencies, memory.dependencies)) {
+	if (/* first time */ !memory.dependencies || !match(dependencies, memory.dependencies)) {
+		const newDependencies = [...dependencies];
+		const oldValue = memory.value;
+		const oldDependencies = memory.dependencies;
+
+
 		// recreate value
-		const value = factory instanceof Function ? 
-			factory(dependencies, memory.value, memory.dependencies)
+		const newValue = factory instanceof Function ?
+			factory(newDependencies, oldValue, /* null on mount */ oldDependencies)
 			: factory;
 
-		destroy(); // destroy old
+		destroy(oldDependencies, /* nullable on mount */ newDependencies, newValue);
 
 		// save
-		memory.value = value;
-		memory.dependencies = dependencies;
+		memory.value = newValue;
+		memory.dependencies = newDependencies;
 		memory.destructor = destructor;
 	}
 
 	// on unmount, destroy
-	useEffect(() => destroy, []);
+	useEffect(() => destroy(memory.dependencies), []);
 
 	return memory.value;
 }
