@@ -1,7 +1,8 @@
-import {useState} from "react"
-import useCallback from "./useCallback"
+import { useState } from "react"
 
-export default function useForceRender(){
+export default function useForceRender() {
 	const [, set] = useState(0);
-	return useCallback(() => set(i => i + 1));
+	if (!set.forceRender)
+		set.forceRender = () => set(i => i + 1);
+	return set.forceRender;
 }
