@@ -1,8 +1,8 @@
 import { useState } from "react"
 
 export default function useForceRender() {
-	const [, set] = useState(0);
+	const [, set] = useState();
 	if (!set.forceRender)
-		set.forceRender = () => set(i => i + 1);
+		set.forceRender = () => set({});
 	return set.forceRender;
 }

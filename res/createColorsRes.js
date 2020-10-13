@@ -1,5 +1,5 @@
-const {map} = require('ramda');
-const getLastIndexOf = require('js-tools/Arrays/getLastIndexOf');
+const { map } = require('ramda');
+const getLastIndexOf = require('js-tools/Arrays/getLastIndex');
 
 export default map(rawColors => {
 	const getColor = index => {
