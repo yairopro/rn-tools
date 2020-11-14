@@ -6,7 +6,7 @@ import LinkingContext from "@react-navigation/native/lib/module/LinkingContext";
 import isDefined from "js-tools/is/defined"
 import { Platform } from "react-native";
 
-export default function /* Web */ Portal({ to: name, with: params, as: action, enabled = true, children: child }) {
+export default function /* Web */ Portal({ to: name, with: params, as: action, enabled = true, children: child, a }) {
 	// keep params instance as long as it doesn't change to prevent destination path
 	params = useMemory(params, params && Object.entries(params).flat(1));
 
@@ -35,7 +35,7 @@ export default function /* Web */ Portal({ to: name, with: params, as: action, e
 	enabled = enabled && (name || typeof name === 'string');
 
 	// correct props (if enabled)
-	if (enabled){
+	if (enabled) {
 		props.onClick = props.onPress;
 		delete props.onPress;
 

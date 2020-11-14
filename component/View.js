@@ -1,5 +1,5 @@
 import React from "react"
-import { View as RNView, TouchableOpacity } from "react-native"
+import { TouchableOpacity } from "react-native"
 import parallel from "js-tools/function/parallel"
 import use from "../hook";
 
@@ -22,9 +22,10 @@ export default function View({ responsive, onPress, ...props }) {
 	if (props.children instanceof Function)
 		props.children = props.children({ layout });
 
-	const Layout = onPress ? TouchableOpacity : RNView;
+	props.disabled = (props.disabled !== undefined) ? Boolean(disabled)
+		: !(props.onPress || props.onClick || props.onLongPress);
 
-	return <Layout {...props} />;
+	return <TouchableOpacity {...props} />;
 }
 
 const DEFAULT_RESPONSIVE = () => true;  // always render
