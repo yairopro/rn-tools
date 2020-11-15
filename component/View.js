@@ -3,7 +3,7 @@ import { TouchableOpacity } from "react-native"
 import parallel from "js-tools/function/parallel"
 import use from "../hook";
 
-export default function View({ responsive, onPress, ...props }) {
+export default function View({ responsive, ...props }) {
 	const [layout, setLayout] = use.state(null);
 	if (responsive) {
 		if (!(responsive instanceof Function))
