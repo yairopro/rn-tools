@@ -20,7 +20,7 @@ export default function useResponsive(levels) {
 		const newLevel = getLevelOf(event);
 		if (newLevel !== level)
 			setLevel(level);
-	}, [compareWidths]);
+	}, [getLevelOf]);
 
 	return [level, onLayout];
 }
