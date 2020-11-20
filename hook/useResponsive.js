@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import useMemory from "./useMemory";
 
 export default function useResponsive(levels) {
-	const getLevelOf = useMemory(([values]) => {
+	const getLevelOf = useMemory((values) => {
 		const orderedLevels = values.filter(width => width >= 0).sort();
 
 		if (orderedLevels[orderedLevels.length - 1] !== Infinity)
