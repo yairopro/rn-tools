@@ -1,5 +1,6 @@
-import { useCallback } from "react";
+import { useState } from "react";
 import useMemory from "./useMemory";
+import useCallback from "./useCallback";
 
 export default function useResponsive(levels) {
 	const getLevelOf = useMemory((values) => {
