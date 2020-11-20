@@ -2,6 +2,9 @@ import createResponsiveLevels from "../utils/createResponsiveLevels";
 import { useState } from "react"
 import useMemory from "./useMemory"
 
+/**
+ * @deprecated use useResponsive instead
+ */
 export default function useResponsiveLevels(levels) {
 	const [level, setLevel] = useState(undefined);
 
@@ -10,7 +13,7 @@ export default function useResponsiveLevels(levels) {
 
 		return function (layout, oldLayout) {
 			const levelChanged = compareLayouts(layout, oldLayout);
-			
+
 			if (levelChanged) {
 				const level = compareLayouts.getLevelOf(layout);
 				setLevel(level);
