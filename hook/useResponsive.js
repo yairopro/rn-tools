@@ -19,8 +19,8 @@ export default function useResponsive(levels) {
 	const onLayout = useCallback(event => {
 		const newLevel = getLevelOf(event);
 		if (newLevel !== level)
-			setLevel(level);
-	}, [getLevelOf, newLevel]);
+			setLevel(newLevel);
+	}, [getLevelOf, level]);
 
 	return [level, onLayout];
 }
