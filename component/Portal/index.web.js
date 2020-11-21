@@ -6,7 +6,7 @@ import LinkingContext from "@react-navigation/native/lib/module/LinkingContext";
 import isDefined from "js-tools/is/defined"
 import { Platform } from "react-native";
 
-export default function /* Web */ Portal({ to: name, with: params, as: action, enabled = true, children: child, a }) {
+export default function /* Web */ Portal({ to: name, with: params, as: action, disabled, children: child, a }) {
 	// keep params instance as long as it doesn't change to prevent destination path
 	params = useMemory(params, params && Object.entries(params).flat(1));
 
@@ -31,11 +31,13 @@ export default function /* Web */ Portal({ to: name, with: params, as: action, e
 	// create props
 	const props = useLinkProps({ to, action });
 
-	// check if enabled
-	enabled = enabled && (name || typeof name === 'string');
+	// check if disabled
+	disabled = (disabled !== undefined) ?
+		Boolean(disabled)
+		: !(name || typeof name === 'string');
 
-	// correct props (if enabled)
-	if (enabled) {
+	// correct props (if not disabled)
+	if (!disabled) {
 		props.onClick = props.onPress;
 		delete props.onPress;
 
@@ -45,8 +47,8 @@ export default function /* Web */ Portal({ to: name, with: params, as: action, e
 			delete props.accessibilityRole;
 	}
 
-	// apply props (if enabled)
-	return enabled ? React.cloneElement(child, props) : child;
+	// apply props (if not disabled)
+	return !disabled ? React.cloneElement(child, props) : child;
 }
 
 const DEFAULT_ACTION = Platform.select({
