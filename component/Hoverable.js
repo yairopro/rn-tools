@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react"
 export default function Hoverable({ children: child, disabled, onHoverChanged }) {
 	const [hovered, setHovered] = useState(undefined);
 	useEffect(() => {
-		if (hovered !== undefined && !disabled)
+		if (hovered !== undefined && !disabled && onHoverChanged instanceof Function)
 			onHoverChanged(hovered);
 	}, [hovered, disabled]);
 
