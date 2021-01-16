@@ -2,6 +2,7 @@ import React from "react"
 import match from "js-tools/array/match";
 import timeout from "js-tools/utils/timeout"
 import call from "ramda/es/call"
+import { __ } from "ramda";
 
 function generateUseEffect(schedule) {
 	return function effectHook(effect, dependencies) {
@@ -37,7 +38,7 @@ function generateUseEffect(schedule) {
 }
 
 export const useEffect = generateUseEffect(timeout); // async
-export const useSyncEffect = generateUseEffect(call); // sync
 export default useEffect; // default is async
 
-
+export const useSyncEffect = generateUseEffect(call); // sync
+export const useDebouncedEffect = (time, ...params) => generateUseEffect(timeout(__, time))(...params);

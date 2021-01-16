@@ -28,27 +28,25 @@ export default function /* Web */ Portal({ to: name, with: params, as: action, d
 		return action;
 	}, [action, name, params]);
 
-	// create props
-	const props = useLinkProps({ to, action });
+
+	const linkProps = useLinkProps({ to, action });
+	linkProps.onClick = linkProps.onPress;
+	delete linkProps.onPress;
+
+	// accessibilityRole must not change overwise the html element change and all event listeners are lost (like onLayout)
+	// nested links are forbiden
+	const isInLink = false; // TODO https://stackoverflow.com/questions/63801457/react-how-to-know-if-a-component-is-in-a-link-element
+	const accessibilityRoleProp = { accessibilityRole: isInLink ? undefined : 'link' };
 
 	// check if disabled
 	disabled = (disabled !== undefined) ?
 		Boolean(disabled)
 		: !(name || typeof name === 'string');
 
-	// correct props (if not disabled)
-	if (!disabled) {
-		props.onClick = props.onPress;
-		delete props.onPress;
+	// apply link props if not disabled
+	const props = Object.assign({}, accessibilityRoleProp, disabled ? {} : linkProps);
 
-		// nested links are forbiden
-		const isInLink = false; // TODO https://stackoverflow.com/questions/63801457/react-how-to-know-if-a-component-is-in-a-link-element
-		if (isInLink)
-			delete props.accessibilityRole;
-	}
-
-	// apply props (if not disabled)
-	return !disabled ? React.cloneElement(child, props) : child;
+	return React.cloneElement(child, props);
 }
 
 const DEFAULT_ACTION = Platform.select({
