@@ -1,10 +1,12 @@
-import React from "react"
-import useMemory from "../../hook/useMemory"
-import { CommonActions, getPathFromState, StackActions } from "@react-navigation/core";
+import { getPathFromState, StackActions } from "@react-navigation/core";
 import { useLinkProps } from "@react-navigation/native";
 import LinkingContext from "@react-navigation/native/lib/module/LinkingContext";
-import isDefined from "js-tools/is/defined"
-import { Platform } from "react-native";
+import parallel from "js-tools/function/parallel";
+import isDefined from "js-tools/is/defined";
+import { pipe, prop } from "ramda";
+import React from "react";
+import useMemory from "../../hook/useMemory";
+import useStyle from "../../hook/useStyle";
 
 export default function /* Web */ Portal({ to: name, with: params, as: action, disabled, children: child, a }) {
 	// keep params instance as long as it doesn't change to prevent destination path
@@ -30,8 +32,16 @@ export default function /* Web */ Portal({ to: name, with: params, as: action, d
 
 
 	const linkProps = useLinkProps({ to, action });
-	linkProps.onClick = linkProps.onPress;
-	delete linkProps.onPress;
+	// view doesn't handle onPress
+	linkProps.onClick = parallel(
+		event => event.portalHandled = true, // flag to handle once only
+		linkProps.onPress
+	);
+	// touchable & Pressable don't handle onClick
+	linkProps.onPress = pipe(prop('nativeEvent'), event => {
+		if (!event.portalHandled) // check if already handled
+			linkProps.onClick(event);
+	});
 
 	// accessibilityRole must not change overwise the html element change and all event listeners are lost (like onLayout)
 	// nested links are forbiden
@@ -43,13 +53,15 @@ export default function /* Web */ Portal({ to: name, with: params, as: action, d
 		Boolean(disabled)
 		: !(name || typeof name === 'string');
 
+	const disablingProps = {
+		style: useStyle(child?.props?.style, { cursor: 'default' }),
+	};
+
+
 	// apply link props if not disabled
-	const props = Object.assign({}, accessibilityRoleProp, disabled ? {} : linkProps);
+	const props = Object.assign({}, accessibilityRoleProp, disabled ? disablingProps : linkProps);
 
 	return React.cloneElement(child, props);
 }
 
-const DEFAULT_ACTION = Platform.select({
-	web: StackActions.push,
-	default: CommonActions.navigate,
-});
+const DEFAULT_ACTION = StackActions.push;
