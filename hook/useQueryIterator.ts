@@ -8,9 +8,11 @@ export default function useQueryIterator<TData, TVariables extends object>(
 	loader: QueryLoader<TData, TVariables>,
 	config: QueryIteratorConfig<TData>,
 ): QueryIterator<TData, TVariables> {
+	
 	const iterator = useMemory(() => new QueryIterator(loader, config), [loader]);
 	useSubscribe(iterator?.subscribe, [iterator]);
 	return iterator;
+	
 }
 
 export interface QueryIteratorConfig<TData> {
