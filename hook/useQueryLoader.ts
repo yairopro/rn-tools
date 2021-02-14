@@ -11,7 +11,7 @@ function useQueryLoader<TData, TVariables>(
 		new QueryLoader(query, variables),
 		[
 			query,
-			...Object.entries(variables || {}),
+			...Object.entries(variables || {}).flat(),
 		]
 	);
 
