@@ -1,18 +1,27 @@
-import { useState } from "react"
-import { QueryLoader } from './useQueryLoader';
-import useMemory from "./useMemory"
 import { Subject } from "rxjs";
-import useSubscribe from "./useSubscribe"
+import { useSyncEffect } from "./useEffect";
+import useMemory from "./useMemory";
+import { QueryLoader } from './useQueryLoader';
+import useSubscribe from "./useSubscribe";
 
 export default function useQueryIterator<TData, TVariables extends object>(
 	loader: QueryLoader<TData, TVariables>,
 	config: QueryIteratorConfig<TData>,
 ): QueryIterator<TData, TVariables> {
-	
+
 	const iterator = useMemory(() => new QueryIterator(loader, config), [loader]);
 	useSubscribe(iterator?.subscribe, [iterator]);
+
+	// check page loaded by the loader 
+	useSyncEffect(([data]) => {
+		if (data && iterator.items?.length < config.range)
+			iterator.end = true;
+	},
+		[loader?.data],
+	);
+
 	return iterator;
-	
+
 }
 
 export interface QueryIteratorConfig<TData> {
