@@ -21,6 +21,15 @@ export default function useResponsive(levels) {
 		if (newLevel !== level)
 			setLevel(newLevel);
 	}, [getLevelOf, level]);
+	
+	const key = Object.entries(levels).find(([, width]) => width == level)?.[0];
+	function select(options){
+		return options?.[key] || options?.default;
+	}
 
-	return [level, onLayout];
+	function run(options){
+		return select(options)?.();
+	}
+
+	return [level, onLayout, {select, run, key}];
 }
