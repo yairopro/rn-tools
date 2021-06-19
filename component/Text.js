@@ -1,5 +1,5 @@
-import React from "react"
-import {Text as RNText, useContext} from "react-native"
+import React, {useContext} from "react"
+import {Text as RNText} from "react-native"
 import useStyle from "../hook/useStyle"
 
 export default function Text({...props}){
