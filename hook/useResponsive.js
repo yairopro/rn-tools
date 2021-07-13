@@ -1,17 +1,17 @@
+import { nth } from "ramda";
 import { useState } from "react";
-import useMemory from "./useMemory";
 import useCallback from "./useCallback";
 
 export default function useResponsive(levels) {
-	const getLevelOf = useMemory((values) => {
-		const orderedLevels = values.filter(width => width >= 0).sort();
+	const entries = Object.entries(levels)
+		.filter(([, width]) => width > 0)
+		.sort(([, a], [, b]) => a - b);
+	entries.push(['Infinity', Infinity]);
 
-		if (orderedLevels[orderedLevels.length - 1] !== Infinity)
-			orderedLevels.push(Infinity);
-
-		return event => orderedLevels.find(level => event.nativeEvent.layout.width < level);
-	},
-		Object.values(levels || {}),
+	const orderedLevels = entries.map(nth(1));
+	const getLevelOf = useCallback(event =>
+		orderedLevels.find(level => event.nativeEvent.layout.width < level),
+		orderedLevels
 	);
 
 	const [level, setLevel] = useState(undefined);
@@ -21,15 +21,15 @@ export default function useResponsive(levels) {
 		if (newLevel !== level)
 			setLevel(newLevel);
 	}, [getLevelOf, level]);
-	
-	const key = Object.entries(levels).find(([, width]) => width == level)?.[0];
-	function select(options){
+
+	const key = entries.find(([, width]) => width == level)?.[0];
+	function select(options) {
 		return options?.[key] || options?.default;
 	}
 
-	function run(options){
+	function run(options) {
 		return select(options)?.();
 	}
 
-	return [level, onLayout, {select, run, key}];
+	return [level, onLayout, { select, run, key }];
 }
