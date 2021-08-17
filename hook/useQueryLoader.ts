@@ -1,5 +1,6 @@
 import { useQuery, gql, QueryResult, DocumentNode, TypedDocumentNode } from "@apollo/client"
 import useMemory from "./useMemory";
+import {equals} from 'ramda'
 
 function useQueryLoader<TData, TVariables>(
 	query: Query<TVariables>,
@@ -7,11 +8,17 @@ function useQueryLoader<TData, TVariables>(
 ): QueryLoader<TData, TVariables> {
 	const queryResult = useQuery(query || EMPTY_QUERY, { variables, skip: !query }) as QueryLoader<TData, TVariables>;
 
-	const queryLoader = useMemory(() =>
-		new QueryLoader(query, variables),
+	const varsObject = variables || {};
+	const queryLoader = useMemory(([query, ...flatVars], _, old) => {
+		const [oldQuery, ...oldFlatVars] = old || [];
+		if (query && query === oldQuery && !equals(flatVars, oldFlatVars))
+			queryResult.refetch(varsObject);
+
+		return new QueryLoader(query, variables);
+	},
 		[
 			query,
-			...Object.entries(variables || {}).flat(),
+			...Object.entries(varsObject).flat(),
 		]
 	);
 
