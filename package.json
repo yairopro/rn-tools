@@ -1,18 +1,18 @@
 {
 	"name": "rn-tools",
-	"version": "0.0.43",
+	"version": "0.0.44",
 	"repository": "https://github.com/yairopro/rn-tools.git",
 	"author": "yair <yairopro@gmail.com>",
 	"license": "MIT",
 	"peerDependencies": {
 		"@apollo/client": "^3.3.7",
 		"@react-navigation/native": "5.x",
-		"firebase": "^7.16.1",
+		"firebase": "^9.1.1",
 		"js-tools": "git+https://github.com/yairopro/js-tools.git#v0.0.11",
 		"ramda": "^0.27.1",
-		"react": "^17.0.1",
-		"react-native": "^0.63.1",
-		"react-native-web": "^0.14.8"
+		"react": "^17.0.2",
+		"react-native": "^0.66.0",
+		"react-native-web": "^0.17.5"
 	},
 	"dependencies": {
 		"rxjs": "^6.6.3"

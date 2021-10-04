@@ -12,13 +12,6 @@ export default function /* Web */ Portal({ to: name, with: params, as: action, d
 	// keep params instance as long as it doesn't change to prevent destination path
 	params = useMemory(params, params && Object.entries(params).flat(1));
 
-	// define destination
-	const config = React.useContext(LinkingContext)?.options?.config;
-	const to = useMemory(() =>
-		getPathFromState({ routes: [{ name, params }] }, config),
-		[name, params, config],
-	);
-
 	// correct action
 	action = useMemory(([action, name, params]) => {
 		if (!action && isDefined(name))
@@ -31,7 +24,8 @@ export default function /* Web */ Portal({ to: name, with: params, as: action, d
 	}, [action, name, params]);
 
 
-	const linkProps = useLinkProps({ to, action });
+	const linkProps = useLinkProps({ to: { name, params }, action });
+	
 	// view doesn't handle onPress
 	linkProps.onClick = parallel(
 		event => event.portalHandled = true, // flag to handle once only
