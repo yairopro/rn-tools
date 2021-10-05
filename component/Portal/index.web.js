@@ -1,6 +1,4 @@
-import { getPathFromState, StackActions } from "@react-navigation/core";
-import { useLinkProps } from "@react-navigation/native";
-import LinkingContext from "@react-navigation/native/lib/module/LinkingContext";
+import { useLinkProps, StackActions } from "@react-navigation/native";
 import parallel from "js-tools/function/parallel";
 import isDefined from "js-tools/is/defined";
 import { pipe, prop } from "ramda";
@@ -23,8 +21,7 @@ export default function /* Web */ Portal({ to: name, with: params, as: action, d
 		return action;
 	}, [action, name, params]);
 
-
-	const linkProps = useLinkProps({ to: { name, params }, action });
+	const linkProps = useLinkProps({ to: { screen: name, params }, action });
 	
 	// view doesn't handle onPress
 	linkProps.onClick = parallel(
