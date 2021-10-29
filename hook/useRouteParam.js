@@ -1,29 +1,37 @@
-import {useNavigation, useRoute} from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import justTry from "../utils/justTry";
+import { useSyncEffect } from "./useEffect";
 import useMemory from "./useMemory";
-import {useSyncEffect} from "./useEffect";
 
-export default function useRouteParamState(key, config){
+export default function useRouteParamState(key, config) {
 	const navigation = useNavigation();
 	const memory = useMemory({
-		get(){
-			const {route, config} = this;
+		get() {
+			const { route, config } = this;
 
-			let value = route.params?.[key];
-			if (config?.read instanceof Function)
-				value = config.read(value);
+			const param = route.params?.[key];
+			const read = (config?.read instanceof Function) ?
+				config.read :
+				justTry(JSON.parse);
 
-			return value;
+			return read(param);
 		},
 
-		set(update){
-			if (update instanceof Function){
+		set(update) {
+			let value = update;
+			if (update instanceof Function) {
 				const lastState = this.beingSaved ? this.beingSaved.value : this.get();
-				update = update(lastState);
+				value = update(lastState);
 			}
 
-			const param = this.config?.write instanceof Function ? this.config.write(update) : update;
-			this.beingSaved = {value: param};
-			navigation.setParams({[key]: param});
+			this.beingSaved = { value };
+
+			const { config } = this;
+			const write = config?.write instanceof Function ?
+				config.write :
+				justTry(JSON.stringify);
+
+			navigation.setParams({ [key]: write(value) });
 		},
 	});
 
