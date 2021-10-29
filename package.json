@@ -1,12 +1,12 @@
 {
 	"name": "rn-tools",
-	"version": "0.0.46",
+	"version": "0.0.47",
 	"repository": "https://github.com/yairopro/rn-tools.git",
 	"author": "yair <yairopro@gmail.com>",
 	"license": "MIT",
 	"peerDependencies": {
 		"@apollo/client": "^3.3.7",
-		"@react-navigation/native": "5.x",
+		"@react-navigation/native": "^6.0.6",
 		"firebase": "^9.1.1",
 		"js-tools": "git+https://github.com/yairopro/js-tools.git#v0.0.11",
 		"ramda": "^0.27.1",
