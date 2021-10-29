@@ -11,29 +11,26 @@ function generateUseEffect(schedule) {
 
 		const memory = React.useRef({}).current;
 
-		/* omnipresent */ function undo() {
-			const undo = memory.undo;
-			memory.undo = undefined; // run once only
-			if (undo instanceof Function)
-				undo();
-		}
-
 		if (/* first time */ !memory.dependencies || !match(dependencies, memory.dependencies)) {
+			memory.cancel?.();
+
 			const oldDependencies = memory.dependencies;
 			const newDependencies = memory.dependencies = [...dependencies];
 
-			function runEffect() {
-				undo();
+			memory.cancel = schedule(() => {
+				memory.undo?.();
 
-				if (effect)
-					memory.undo = effect(newDependencies, /* nullable */ oldDependencies);
-			}
+				let undoEffect;
 
-			memory.undo /* unscheduler */ = schedule(runEffect);
+				if (effect instanceof Function)
+					undoEffect = effect(newDependencies, /* nullable */ oldDependencies);
+
+				memory.undo = undoEffect instanceof Function ? undoEffect : undefined;
+			});
 		}
 
 		// undo on unmount
-		React.useEffect(() => undo, []);
+		React.useEffect(() => memory.undo?.(), []);
 	};
 }
 
@@ -41,4 +38,4 @@ export const useEffect = generateUseEffect(timeout); // async
 export default useEffect; // default is async
 
 export const useSyncEffect = generateUseEffect(call); // sync
-export const useDebouncedEffect = (time, ...params) => generateUseEffect(timeout(__, time))(...params);
+export const useDebouncedEffect = (time, ...params) => generateUseEffect(effect => timeout(effect, time))(...params);
