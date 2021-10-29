@@ -1,4 +1,4 @@
-import { identity, tryCatch, __ } from "ramda";
+import { nthArg, tryCatch, __ } from "ramda";
 
-const justTry = tryCatch(__, identity);
+const justTry = tryCatch(__, nthArg(1));
 export default justTry;
