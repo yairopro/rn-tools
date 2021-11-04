@@ -30,7 +30,10 @@ function generateUseEffect(schedule) {
 		}
 
 		// undo on unmount
-		React.useEffect(() => memory.undo?.(), []);
+		React.useEffect(() => () => {
+			memory.cancel?.();
+			memory.undo?.();
+		}, []);
 	};
 }
 

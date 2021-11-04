@@ -1,8 +1,7 @@
-import firebase from "firebase/app"
-import "firebase/auth"
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const onceAuthReady = new Promise(resolve => {
-	const detach = firebase.auth().onAuthStateChanged(() => {
+	const detach = onAuthStateChanged(getAuth(), () => {
 		resolve();
 		detach();
 	});
