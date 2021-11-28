@@ -5,7 +5,7 @@ import useSubscribe from "./useSubscribe";
 export default function useUser() {
 	useSubscribe(forceRender => {
 		if (!onceAuthReady.ready)
-			onceAuthReady.then(forceRender);
+			onceAuthReady().then(forceRender);
 
 		const auth = getAuth();
 		return onAuthStateChanged(auth, forceRender);

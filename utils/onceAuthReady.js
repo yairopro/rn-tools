@@ -1,13 +1,19 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
-const onceAuthReady = new Promise(resolve => {
-	const detach = onAuthStateChanged(getAuth(), () => {
-		resolve();
-		detach();
-	});
-});
 
-onceAuthReady.ready = false; // for sync use
-onceAuthReady.then(() => onceAuthReady.ready = true);
+let promise;
+export default function onceAuthReady(){
+	if (!promise){
+		promise = new Promise(resolve => {
+			const detach = onAuthStateChanged(getAuth(), () => {
+				resolve();
+				detach();
+			});
+		});
+		
+		promise.ready = false; // for sync use
+		promise.then(() => onceAuthReady.ready = true);
+	}
 
-export default onceAuthReady;
+	return promise;
+};

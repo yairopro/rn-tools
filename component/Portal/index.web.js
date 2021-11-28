@@ -6,7 +6,7 @@ import React from "react";
 import useMemory from "../../hook/useMemory";
 import useStyle from "../../hook/useStyle";
 
-export default function /* Web */ Portal({ to: name, with: params, as: action, disabled, children: child, a }) {
+export default function /* Web */ Portal({ to: name, with: params, as: action, disabled, children: child }) {
 	// keep params instance as long as it doesn't change to prevent destination path
 	params = useMemory(params, params && Object.entries(params).flat(1));
 
