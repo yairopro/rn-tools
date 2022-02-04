@@ -6,7 +6,7 @@ import memory from "./useMemory"
 import style from "./useStyle"
 import subscribre from "./useSubscribe"
 import responsiveLevel from "./useResponsiveLevel"
-import responsive from "./useResponsive"
+import responsive from "./useResponsive.ts"
 
 const use = {
 	state,
