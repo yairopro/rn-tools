@@ -1,8 +1,8 @@
 import * as React from "react";
 import { NavigationAction, StackActions, useLinkProps } from "@react-navigation/native";
 import { Dictionary, isNil } from "ramda";
-import useMemory from "../../hook/useMemory";
-import useStyle from "../../hook/useStyle";
+import useMemory from "../hook/useMemory";
+import useStyle from "../hook/useStyle";
 
 export default function /* Web */ Portal({ to: name, with: params, as: action, disabled, children: child }: PortalProps) {
 	// keep params instance as long as it doesn't change to prevent destination path
