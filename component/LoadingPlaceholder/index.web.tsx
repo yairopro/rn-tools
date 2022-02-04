@@ -1,14 +1,13 @@
-import React from "react"
-import {View} from "react-native"
+import * as React from "react"
+import { View } from "react-native"
 import use from "../../hook";
 import "./animation.css"
 
 export default function LoadingPlaceholder({ animated, Component = View, ...props }) {
+	animated = Boolean(animated);
 	props.style = use.style(props.style, animated && localStyles.layout, [animated]);
 
-	return (
-		<Component {...props}/>
-	);
+	return <Component {...props} />;
 }
 
 const localStyles = {
@@ -17,4 +16,4 @@ const localStyles = {
 		animationIterationCount: "infinite",
 		animationDuration: "4s",
 	}
-}
+};
