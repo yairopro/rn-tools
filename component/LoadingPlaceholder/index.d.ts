@@ -1,1 +1,1 @@
-export * from "./index.web"
+export { default } from "./index.web"
