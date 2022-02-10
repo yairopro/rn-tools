@@ -1,8 +1,8 @@
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged, User } from "firebase/auth";
 import onceAuthReady from "../utils/onceAuthReady";
 import useSubscribe from "./useSubscribe";
 
-export default function useUser() {
+export default function useUser(): User | null | undefined {
 	useSubscribe(forceRender => {
 		if (!onceAuthReady.ready)
 			onceAuthReady().then(forceRender);
