@@ -1,6 +1,7 @@
 import useMemory from "./useMemory";
+import {nil} from "js-tools/types/common"
 
-export default function useStyle(userStyle: Style, defaultStyles: DefaultStyle, dependencies: any[]) {
+export default function useStyle(userStyle: Style, defaultStyles: DefaultStyle, dependencies?: any[]) {
 	return useMemory(([, ...dependenciesParams]) => {
 		if (defaultStyles instanceof Function)
 			defaultStyles = defaultStyles(...dependenciesParams);
@@ -11,7 +12,7 @@ export default function useStyle(userStyle: Style, defaultStyles: DefaultStyle, 
 	);
 }
 
-type Style = object | any[];
+type Style = object | any[] | nil;
 type DefaultStyle =
 	| Style
 	| Style[]

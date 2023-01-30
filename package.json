@@ -8,13 +8,13 @@
 		"@apollo/client": "^3.3.7",
 		"@react-navigation/native": "^6.0.6",
 		"firebase": "^9.2.0",
-		"js-tools": "git+https://github.com/yairopro/js-tools.git#v0.0.11",
 		"ramda": "^0.27.1",
 		"react": "^17.0.2",
 		"react-native": "^0.66.0",
 		"react-native-web": "^0.17.5"
 	},
 	"dependencies": {
+		"js-tools": "git+https://github.com/yairopro/js-tools.git#v0.0.14",
 		"rxjs": "^6.6.3"
 	},
 	"devDependencies": {
